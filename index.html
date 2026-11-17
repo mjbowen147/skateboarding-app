@@ -57,6 +57,20 @@
         NICE!
       </div>
 
+      <!-- Skatepark Zone / Feature Badge -->
+      <div id="park-hud" class="flex items-center gap-1.5 panel border-2 border-emerald-400 px-3 py-1.5 rounded-2xl shadow-lg pointer-events-auto">
+        <span class="text-xs font-black text-emerald-400 tracking-wider">ZONE:</span>
+        <span id="park-feature-name" class="font-black text-xs text-yellow-300 uppercase font-display">A-FRAME RAIL SLIDE</span>
+      </div>
+
+      <!-- Touchgrind Live Combo Ticker & Multiplier Badge -->
+      <div id="combo-hud" class="hidden flex items-center gap-2 pointer-events-auto">
+        <div class="panel border-2 border-amber-400 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 shadow-lg animate-pulse">
+          <span class="text-xs font-black text-amber-300 tracking-wider">COMBO</span>
+          <span id="combo-mult" class="font-black text-base text-yellow-300 font-display">2&times;</span>
+        </div>
+      </div>
+
       <div class="flex gap-2 pointer-events-auto">
         <button id="btn-settings" type="button" onpointerdown="openSettings()" onmousedown="openSettings()" onclick="openSettings()" class="px-3.5 py-2 rounded-xl panel border-2 border-slate-700 hover:border-cyan-400 font-bold text-xs flex items-center gap-1.5 shadow-lg">
           <span>&#9881;&#65039;</span> <span>Settings</span>
@@ -86,81 +100,109 @@
       <span class="text-[10px] font-extrabold tracking-widest text-cyan-400 uppercase">STEER (OR &#8592; &#8594;)</span>
     </div>
 
-    <!-- Bottom Center Question / Trick Run Dock -->
-    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-30 w-full max-w-xl px-3 pointer-events-none flex flex-col items-center">
+    <!-- Center Question / Trick Run Dock (Positioned at top-center so the full road, skater & board are visible!) -->
+    <div class="absolute top-16 left-1/2 -translate-x-1/2 z-30 w-full max-w-lg px-3 pointer-events-none flex flex-col items-center">
       <!-- Question Dock -->
-      <div id="q-dock" class="panel border-2 border-cyan-500/50 rounded-3xl p-4 shadow-2xl pointer-events-auto w-full flex flex-col items-center">
-        <div class="flex justify-between items-center w-full mb-2.5">
+      <div id="q-dock" class="panel border-2 border-cyan-500/50 rounded-2xl p-3 shadow-2xl pointer-events-auto w-full flex flex-col items-center">
+        <div class="flex justify-between items-center w-full mb-1.5">
           <div id="spell-tools" class="flex gap-1.5">
-            <button type="button" onpointerdown="speakWord()" onmousedown="speakWord()" onclick="speakWord()" class="px-3 py-1.5 rounded-xl bg-cyan-900 border border-cyan-400/60 text-cyan-100 font-extrabold text-xs flex items-center gap-1">
+            <button type="button" onpointerdown="speakWord()" onmousedown="speakWord()" onclick="speakWord()" class="px-2.5 py-1 rounded-lg bg-cyan-900 border border-cyan-400/60 text-cyan-100 font-extrabold text-xs flex items-center gap-1">
               &#128266; Listen
             </button>
-            <button type="button" onpointerdown="peekWord()" onmousedown="peekWord()" onclick="peekWord()" class="px-3 py-1.5 rounded-xl bg-amber-900 border border-amber-400/60 text-amber-100 font-extrabold text-xs flex items-center gap-1">
+            <button type="button" onpointerdown="peekWord()" onmousedown="peekWord()" onclick="peekWord()" class="px-2.5 py-1 rounded-lg bg-amber-900 border border-amber-400/60 text-amber-100 font-extrabold text-xs flex items-center gap-1">
               &#128065;&#65039; Peek
             </button>
           </div>
           <span id="q-label" class="text-xs font-extrabold text-cyan-300 uppercase tracking-wider">Spell the word</span>
-          <button id="btn-reset-spell" type="button" onpointerdown="resetSpell()" onmousedown="resetSpell()" onclick="resetSpell()" class="px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300 hover:text-white">
+          <button id="btn-reset-spell" type="button" onpointerdown="resetSpell()" onmousedown="resetSpell()" onclick="resetSpell()" class="px-2 py-0.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300 hover:text-white">
             &#8634; Reset
           </button>
         </div>
 
-        <div id="peek-box" class="hidden w-full mb-2.5 py-1.5 px-3 rounded-xl bg-amber-500/20 border border-amber-400 text-center text-sm font-black text-amber-200 tracking-widest"></div>
+        <div id="peek-box" class="hidden w-full mb-1.5 py-1 px-3 rounded-xl bg-amber-500/20 border border-amber-400 text-center text-sm font-black text-amber-200 tracking-widest"></div>
 
         <!-- Spelling View -->
         <div id="view-spell" class="w-full flex flex-col items-center">
-          <div id="slots" class="flex flex-wrap justify-center gap-1.5 w-full py-2.5 px-2 bg-slate-950 border border-slate-800 rounded-2xl min-h-[52px] mb-2.5"></div>
-          <div id="chips" class="flex flex-wrap justify-center gap-1.5 w-full py-1"></div>
+          <div id="slots" class="flex flex-wrap justify-center gap-1.5 w-full py-1.5 px-2 bg-slate-950 border border-slate-800 rounded-xl min-h-[44px] mb-1.5"></div>
+          <div id="chips" class="flex flex-wrap justify-center gap-1.5 w-full py-0.5"></div>
         </div>
 
         <!-- Maths View -->
         <div id="view-math" class="w-full hidden flex-col items-center py-1">
-          <div id="math-q" class="text-3xl md:text-4xl font-black text-yellow-300 font-display mb-3 tracking-wide"></div>
-          <div id="math-opts" class="flex flex-wrap justify-center gap-2.5 w-full"></div>
+          <div id="math-q" class="text-2xl md:text-3xl font-black text-yellow-300 font-display mb-2 tracking-wide"></div>
+          <div id="math-opts" class="flex flex-wrap justify-center gap-2 w-full"></div>
         </div>
       </div>
 
       <!-- Trick Run Active Dock -->
-      <div id="trick-dock" class="panel border-2 border-pink-500 rounded-3xl p-4 shadow-2xl pointer-events-auto w-full hidden flex-col items-center">
-        <div class="flex justify-between items-center w-full mb-2">
-          <span class="px-3.5 py-1 rounded-full bg-pink-600 text-xs font-black font-display tracking-wide">
+      <div id="trick-dock" class="panel border-2 border-pink-500 rounded-2xl p-3 shadow-2xl pointer-events-auto w-full hidden flex-col items-center">
+        <div class="flex justify-between items-center w-full mb-1">
+          <span class="px-3 py-0.5 rounded-full bg-pink-600 text-xs font-black font-display tracking-wide">
             &#128293; TRICK RUN UNLOCKED! TAP THE TRICK PADS!
           </span>
-          <button type="button" onpointerdown="endTricks()" onmousedown="endTricks()" onclick="endTricks()" class="text-xs font-extrabold text-cyan-200 px-3 py-1 rounded-xl bg-slate-800 border border-slate-600">
-            Next Question &#10148;
+          <button type="button" onpointerdown="endTricks()" onmousedown="endTricks()" onclick="endTricks()" class="text-xs font-extrabold text-cyan-200 px-2.5 py-0.5 rounded-lg bg-slate-800 border border-slate-600">
+            Next &#10148;
           </button>
         </div>
-        <div class="text-xl md:text-2xl font-black text-yellow-300 font-display">
+        <div class="text-lg md:text-xl font-black text-yellow-300 font-display">
           Time Left: <span id="t-sec" class="text-pink-400">10</span>s &nbsp;|&nbsp; Run Bonus: +<span id="t-pts" class="text-emerald-400">0</span>
         </div>
       </div>
     </div>
 
-    <!-- Bottom Right Skateboard Trick Pads -->
+    <!-- Bottom Right Touchgrind 2 Trick Grid -->
     <div id="pad-box" class="absolute bottom-4 right-4 z-30 pointer-events-auto flex flex-col items-center opacity-30 pointer-events-none">
-      <div class="grid grid-cols-2 gap-2 p-2 rounded-3xl panel border-2 border-slate-700 shadow-2xl">
+      <div class="grid grid-cols-3 gap-1.5 p-2 rounded-3xl panel border-2 border-slate-700 shadow-2xl">
+        <!-- Row 1: Basic Airs -->
         <button type="button"
-          onpointerdown="trick('50-50 GRIND',300,11,0,0,0.35)" onmousedown="trick('50-50 GRIND',300,11,0,0,0.35)" onclick="trick('50-50 GRIND',300,11,0,0,0.35)"
-          class="t-btn btn-locked w-16 h-16 rounded-2xl bg-amber-600 border-2 border-amber-300 font-black text-[11px] leading-tight text-white shadow-md">
-          &#9889;<br>50-50<br>GRIND
+          onpointerdown="trick('OLLIE',100,14,0,0,0)" onmousedown="trick('OLLIE',100,14,0,0,0)" onclick="trick('OLLIE',100,14,0,0,0)"
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-cyan-600 border-2 border-cyan-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#129432;</span><span>OLLIE</span>
         </button>
         <button type="button"
           onpointerdown="trick('KICKFLIP',250,14,18,0,0)" onmousedown="trick('KICKFLIP',250,14,18,0,0)" onclick="trick('KICKFLIP',250,14,18,0,0)"
-          class="t-btn btn-locked w-16 h-16 rounded-2xl bg-pink-600 border-2 border-pink-300 font-black text-[11px] leading-tight text-white shadow-md">
-          &#128260;<br>KICKFLIP
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-pink-600 border-2 border-pink-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#128260;</span><span>FLIP</span>
         </button>
+        <button type="button"
+          onpointerdown="trick('HEELFLIP',280,14,-18,0,0)" onmousedown="trick('HEELFLIP',280,14,-18,0,0)" onclick="trick('HEELFLIP',280,14,-18,0,0)"
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-purple-600 border-2 border-purple-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#10024;</span><span>HEEL</span>
+        </button>
+        <!-- Row 2: Shuvits & Advanced Flips -->
         <button type="button"
           onpointerdown="trick('POP SHUVIT',220,13,0,16,0)" onmousedown="trick('POP SHUVIT',220,13,0,16,0)" onclick="trick('POP SHUVIT',220,13,0,16,0)"
-          class="t-btn btn-locked w-16 h-16 rounded-2xl bg-emerald-600 border-2 border-emerald-300 font-black text-[11px] leading-tight text-white shadow-md">
-          &#127744;<br>POP<br>SHUVIT
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-emerald-600 border-2 border-emerald-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#127744;</span><span>SHUVIT</span>
         </button>
         <button type="button"
-          onpointerdown="trick('OLLIE',100,14,0,0,0)" onmousedown="trick('OLLIE',100,14,0,0,0)" onclick="trick('OLLIE',100,14,0,0,0)"
-          class="t-btn btn-locked w-16 h-16 rounded-2xl bg-cyan-600 border-2 border-cyan-300 font-black text-[11px] leading-tight text-white shadow-md">
-          &#129432;<br>OLLIE
+          onpointerdown="trick('360 FLIP',450,16,20,24,0)" onmousedown="trick('360 FLIP',450,16,20,24,0)" onclick="trick('360 FLIP',450,16,20,24,0)"
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-rose-600 border-2 border-rose-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#128293;</span><span>TRE</span>
+        </button>
+        <button type="button"
+          onpointerdown="trick('IMPOSSIBLE',420,16,0,32,0)" onmousedown="trick('IMPOSSIBLE',420,16,0,32,0)" onclick="trick('IMPOSSIBLE',420,16,0,32,0)"
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-fuchsia-600 border-2 border-fuchsia-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#127756;</span><span>IMPOSS</span>
+        </button>
+        <!-- Row 3: Grinds & Slides -->
+        <button type="button"
+          onpointerdown="trick('50-50 GRIND',300,11,0,0,0.32)" onmousedown="trick('50-50 GRIND',300,11,0,0,0.32)" onclick="trick('50-50 GRIND',300,11,0,0,0.32)"
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-amber-600 border-2 border-amber-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#9889;</span><span>50-50</span>
+        </button>
+        <button type="button"
+          onpointerdown="trick('NOSEGRIND',360,11,0,0,0.48)" onmousedown="trick('NOSEGRIND',360,11,0,0,0.48)" onclick="trick('NOSEGRIND',360,11,0,0,0.48)"
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-orange-600 border-2 border-orange-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#128640;</span><span>NOSE</span>
+        </button>
+        <button type="button"
+          onpointerdown="trick('BOARDSLIDE',380,12,0,14,0.4)" onmousedown="trick('BOARDSLIDE',380,12,0,14,0.4)" onclick="trick('BOARDSLIDE',380,12,0,14,0.4)"
+          class="t-btn btn-locked w-14 h-14 rounded-2xl bg-indigo-600 border-2 border-indigo-300 font-black text-[9px] leading-tight text-white shadow-md flex flex-col items-center justify-center">
+          <span class="text-xs">&#128761;</span><span>SLIDE</span>
         </button>
       </div>
-      <span class="text-[10px] font-extrabold tracking-widest text-pink-400 uppercase mt-1">TRICK PADS</span>
+      <span class="text-[10px] font-extrabold tracking-widest text-amber-300 uppercase mt-1">TOUCHGRIND TRICK PADS</span>
     </div>
 
     <!-- Pre-Game & In-Game Settings Modal -->
@@ -168,7 +210,7 @@
       <div class="panel border-2 border-cyan-500/60 rounded-3xl max-w-lg w-full p-6 text-center space-y-4 shadow-2xl">
         <div class="flex items-center justify-center gap-2">
           <span class="text-3xl">&#128761;</span>
-          <h1 class="text-2xl md:text-3xl font-black font-display tracking-wide text-white">Skate &amp; Learn</h1>
+          <h1 class="text-2xl md:text-3xl font-black font-display tracking-wide text-white">Skate &amp; Learn <span class="text-xs bg-cyan-500 text-slate-950 px-2 py-0.5 rounded-full font-sans uppercase font-black">v2 Follow-Cam</span></h1>
         </div>
         <p class="text-xs text-slate-300 font-semibold -mt-2">Answer questions to unlock a 10-second Skateboard Trick Run!</p>
 
@@ -268,6 +310,12 @@ THOUGHT</textarea>
     let subject = "english", mode = "spellings", lastMathMode = "tables", tables = [2, 5, 10], goal = 3, streak = 0, score = 0, bonus = 0;
     let inTricks = false, tTimer = null, tLeft = 10;
     let muted = false, actx = null, lastTap = 0;
+
+    // Touchgrind 2 Mechanics: Dynamic Combos, Multipliers & Trick Feed
+    let comboCount = 0;
+    let comboMultiplier = 1;
+    let comboTimer = null;
+    let activeLine = [];
 
     // 150ms Hyperbeam-safe debounce so pointerdown/mousedown/click never double-fire or drop
     function tapOk() {
@@ -704,7 +752,7 @@ THOUGHT</textarea>
     }
 
     // ============================================================================
-    // 2D HTML5 CANVAS 3D-PERSPECTIVE SKATE ENGINE (60FPS, ZERO WEBGL / THREE.JS)
+    // 3D VIBRANT SKATE ENGINE (POKI FREE-SKATE STYLE, 100% LIGHTWEIGHT 2D CANVAS)
     // ============================================================================
     const cvs = document.getElementById('game-canvas');
     const ctx = cvs.getContext('2d');
@@ -715,32 +763,63 @@ THOUGHT</textarea>
     window.addEventListener('resize', resize);
     resize();
 
-    let bx = 0, by = 0, vy = 0;
-    let flipA = 0, flipV = 0, shuvA = 0, shuvV = 0, grindT = 0;
-    let stDir = 0, dashOff = 0, sparks = [], activeTrickName = "";
+    let posX = 0, posY = 0;           // World coordinates in skatepark arena (-1300 to 1300)
+    let skaterAngle = 0;               // Heading angle (radians), 0 = North/Up
+    let camX = 0, camY = 0;            // Smooth camera follow coordinates
+    let by = 0, vy = 0;                // Elevation height & vertical air velocity
+    let flipA = 0, flipV = 0;          // 3D flip rotation
+    let shuvA = 0, shuvV = 0;          // 3D shuvit spin
+    let grindT = 0;                    // Board tilt on grinds/slides
+    let stDir = 0;                     // Steer direction (-1 = left, +1 = right)
+    let isPushing = false, isBraking = false;
+    let sparks = [], activeTrickName = "";
 
     function steerHold(d) {
       if (!tapOk()) return;
       stDir = d;
-      bx = Math.max(-cvs.width * 0.26, Math.min(cvs.width * 0.26, bx + d * 24));
+      skaterAngle += d * 0.12;
     }
     function steerRelease() {
       stDir = 0;
     }
 
-    // Keyboard support for steering and tricks
+    // Touch / pointer drag steering on game canvas
+    cvs.addEventListener('pointerdown', e => {
+      if (e.clientY > cvs.height * 0.35 && e.clientY < cvs.height * 0.85) {
+        if (e.clientX < cvs.width * 0.5) {
+          stDir = -1;
+        } else {
+          stDir = 1;
+        }
+      }
+    });
+    cvs.addEventListener('pointerup', () => { stDir = 0; });
+    cvs.addEventListener('pointerleave', () => { stDir = 0; });
+
+    // Keyboard support for steering, pushing, braking and tricks
     window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft') stDir = -1;
-      else if (e.key === 'ArrowRight') stDir = 1;
-      else if (inTricks) {
-        if (e.key === '1' || e.key === ' ') trick('OLLIE', 100, 14, 0, 0, 0);
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') stDir = -1;
+      else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') stDir = 1;
+      else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') isPushing = true;
+      else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') isBraking = true;
+      else if (e.key === ' ') {
+        if (!inTricks) {
+          // Ollie hop while cruising
+          if (by <= 0) { vy = 12; playSound('tap'); }
+        } else {
+          trick('OLLIE', 100, 14, 0, 0, 0);
+        }
+      } else if (inTricks) {
+        if (e.key === '1') trick('OLLIE', 100, 14, 0, 0, 0);
         if (e.key === '2') trick('KICKFLIP', 250, 14, 18, 0, 0);
         if (e.key === '3') trick('POP SHUVIT', 220, 13, 0, 16, 0);
         if (e.key === '4') trick('50-50 GRIND', 300, 11, 0, 0, 0.35);
       }
     });
     window.addEventListener('keyup', e => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') stDir = 0;
+      if (['ArrowLeft', 'ArrowRight', 'a', 'A', 'd', 'D'].includes(e.key)) stDir = 0;
+      if (['ArrowUp', 'w', 'W'].includes(e.key)) isPushing = false;
+      if (['ArrowDown', 's', 'S'].includes(e.key)) isBraking = false;
     });
 
     function spawnSparks(x, y, count, color) {
@@ -765,104 +844,500 @@ THOUGHT</textarea>
       shuvV = sV;
       grindT = tilt;
 
-      // Snap near glowing cyan curb on 50-50 Grind for visual flair
-      if (name === '50-50 GRIND') {
-        const curbSign = bx >= 0 ? 1 : -1;
-        bx = curbSign * (cvs.width * 0.21);
-      }
+      // Touchgrind 2 Multiplier & Combo Mechanic:
+      // Linking tricks within 2.5 seconds raises the combo multiplier up to 8x!
+      clearTimeout(comboTimer);
+      comboCount++;
+      comboMultiplier = Math.min(8, 1 + Math.floor(comboCount * 0.7));
+      activeLine.push(name);
 
-      score += pts;
-      bonus += pts;
+      const totalEarned = pts * comboMultiplier;
+      score += totalEarned;
+      bonus += totalEarned;
       document.getElementById('hud-score').textContent = score;
       document.getElementById('t-pts').textContent = bonus;
-      showMsg(`${name}! +${pts} &#9889;`);
 
-      const sx = cvs.width / 2 + bx;
-      const sy = cvs.height * 0.58 - by;
-      spawnSparks(sx, sy, 20, name === '50-50 GRIND' ? '#22d3ee' : '#facc15');
+      // Update Touchgrind Combo Badge
+      const comboHud = document.getElementById('combo-hud');
+      const comboMult = document.getElementById('combo-mult');
+      if (comboCount > 1) {
+        comboHud.classList.remove('hidden');
+        comboMult.textContent = `${comboMultiplier}× (${comboCount} in a row!)`;
+      }
+
+      // Touchgrind 2 Real-Time Trick Feed Banner
+      const lineText = activeLine.slice(-2).join(' + ');
+      showMsg(`${lineText}! +${totalEarned} (${comboMultiplier}&times;)`);
+
+      // Reset combo if you wait more than 2.5 seconds between tricks
+      comboTimer = setTimeout(() => {
+        comboCount = 0;
+        comboMultiplier = 1;
+        activeLine = [];
+        document.getElementById('combo-hud').classList.add('hidden');
+      }, 2500);
+
+      const sparkColor = name.includes('GRIND') ? '#f59e0b' : (name.includes('FLIP') ? '#f43f5e' : '#38bdf8');
+      spawnSparks(posX, posY, 24, sparkColor);
+    }
+
+    // ============================================================================
+    // VIBRANT SKATEPARK ARENA (100% LIGHTWEIGHT 2D CANVAS, NO ROLLING FLOOR)
+    // ============================================================================
+    function drawSkateparkArena(ctx) {
+      // 1. Concrete Plaza Surface (Bounded park from -1300 to +1300)
+      ctx.fillStyle = '#cbd5e1'; // Smooth concrete
+      ctx.beginPath();
+      ctx.roundRect(-1300, -1300, 2600, 2600, 80);
+      ctx.fill();
+
+      // Stationary Concrete Slab Expansion Joints (Fixed in world space, NOT rolling!)
+      ctx.strokeStyle = 'rgba(100, 116, 139, 0.35)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let gx = -1300; gx <= 1300; gx += 260) {
+        ctx.moveTo(gx, -1300); ctx.lineTo(gx, 1300);
+      }
+      for (let gy = -1300; gy <= 1300; gy += 260) {
+        ctx.moveTo(-1300, gy); ctx.lineTo(1300, gy);
+      }
+      ctx.stroke();
+
+      // Plaza Center Compass & Decorative Skate Art
+      ctx.strokeStyle = 'rgba(14, 165, 233, 0.45)';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.arc(0, 0, 180, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.45)';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(0, 0, 240, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.28)';
+      ctx.font = '900 28px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('SKATE & LEARN SKATEPARK', 0, 0);
+
+      // Stationary Wheel Skid Marks on Concrete
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.16)';
+      ctx.lineWidth = 5;
+      [
+        [-600, -180, 80], [600, -180, 90], [0, -700, 120], [-550, 520, 80]
+      ].forEach(([sxMark, syMark, r]) => {
+        ctx.beginPath();
+        ctx.arc(sxMark, syMark, r, 0.2, 1.8);
+        ctx.stroke();
+      });
+
+      // 2. Concrete Perimeter Coping Barrier & Safety Fence
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 26;
+      ctx.beginPath();
+      ctx.roundRect(-1300, -1300, 2600, 2600, 80);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.roundRect(-1312, -1312, 2624, 2624, 90);
+      ctx.stroke();
+
+      // Fence Posts around perimeter
+      ctx.fillStyle = '#334155';
+      for (let p = -1200; p <= 1200; p += 160) {
+        ctx.fillRect(p - 6, -1318, 12, 12);
+        ctx.fillRect(p - 6, 1306, 12, 12);
+        ctx.fillRect(-1318, p - 6, 12, 12);
+        ctx.fillRect(1306, p - 6, 12, 12);
+      }
+
+      // Exterior Palm Trees outside perimeter
+      [
+        [-1420, -1420], [1420, -1420], [-1420, 1420], [1420, 1420],
+        [0, -1450], [0, 1450], [-1450, 0], [1450, 0]
+      ].forEach(([px, py]) => {
+        ctx.fillStyle = '#78350f';
+        ctx.beginPath();
+        ctx.arc(px, py, 14, 0, Math.PI * 2);
+        ctx.fill();
+        for (let a = 0; a < 8; a++) {
+          const ang = (a * Math.PI) / 4;
+          ctx.strokeStyle = '#15803d';
+          ctx.lineWidth = 8;
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(px + Math.cos(ang) * 65, py + Math.sin(ang) * 65);
+          ctx.stroke();
+        }
+      });
+
+      // 3. OBSTACLE 1: FREESTANDING WOODEN MINI HALF-PIPE (0, -700)
+      const hx = 0, hy = -700;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.3)';
+      ctx.beginPath();
+      ctx.roundRect(hx - 240, hy - 110, 480, 220, 16);
+      ctx.fill();
+
+      // Plywood side cheeks
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(hx - 230, hy - 100, 460, 200);
+
+      // Curved birch transition surface
+      const pipeGrad = ctx.createLinearGradient(hx - 220, 0, hx + 220, 0);
+      pipeGrad.addColorStop(0, '#b45309');
+      pipeGrad.addColorStop(0.2, '#f59e0b');
+      pipeGrad.addColorStop(0.5, '#fef3c7');
+      pipeGrad.addColorStop(0.8, '#f59e0b');
+      pipeGrad.addColorStop(1, '#b45309');
+      ctx.fillStyle = pipeGrad;
+      ctx.fillRect(hx - 210, hy - 90, 420, 180);
+
+      // Stainless Steel Coping Pipes (East & West lips)
+      [-210, 210].forEach(cxPipe => {
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 10;
+        ctx.beginPath();
+        ctx.moveTo(hx + cxPipe, hy - 90); ctx.lineTo(hx + cxPipe, hy + 90);
+        ctx.stroke();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(hx + cxPipe - 2, hy - 90); ctx.lineTo(hx + cxPipe - 2, hy + 90);
+        ctx.stroke();
+      });
+
+      // Deck Platform Safety Rails
+      ctx.fillStyle = '#451a03';
+      ctx.fillRect(hx - 230, hy - 100, 20, 200);
+      ctx.fillRect(hx + 210, hy - 100, 20, 200);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('HALF-PIPE', hx, hy - 70);
+
+      // 4. OBSTACLE 2: A-FRAME RED STEEL GRIND RAIL (-600, -180)
+      const ax = -600, ay = -180;
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.28)';
+      ctx.lineWidth = 14;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay - 170); ctx.lineTo(ax, ay + 170);
+      ctx.stroke();
+
+      [-150, 0, 150].forEach(pyPost => {
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(ax - 18, ay + pyPost - 4, 36, 8);
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        ctx.arc(ax, ay + pyPost, 9, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      const railGrad = ctx.createLinearGradient(ax - 8, 0, ax + 8, 0);
+      railGrad.addColorStop(0, '#fca5a5');
+      railGrad.addColorStop(0.3, '#ef4444');
+      railGrad.addColorStop(0.8, '#b91c1c');
+      railGrad.addColorStop(1, '#450a0a');
+      ctx.strokeStyle = railGrad;
+      ctx.lineWidth = 12;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(ax, ay - 165); ctx.lineTo(ax, ay + 165);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(ax - 2, ay - 160); ctx.lineTo(ax - 2, ay + 160);
+      ctx.stroke();
+
+      // 5. OBSTACLE 3: WOODEN KICKER LAUNCH RAMP (600, -180)
+      const kx = 600, ky = -180;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.3)';
+      ctx.beginPath();
+      ctx.roundRect(kx - 110, ky - 95, 220, 190, 12);
+      ctx.fill();
+
+      const kGrad = ctx.createLinearGradient(0, ky - 90, 0, ky + 90);
+      kGrad.addColorStop(0, '#b45309');
+      kGrad.addColorStop(0.5, '#d97706');
+      kGrad.addColorStop(1, '#f59e0b');
+      ctx.fillStyle = kGrad;
+      ctx.beginPath();
+      ctx.roundRect(kx - 100, ky - 85, 200, 170, 8);
+      ctx.fill();
+
+      const chevs = 8;
+      const cW = 200 / chevs;
+      for (let i = 0; i < chevs; i++) {
+        ctx.fillStyle = i % 2 === 0 ? '#facc15' : '#0f172a';
+        ctx.fillRect(kx - 100 + i * cW, ky - 85, cW, 16);
+      }
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 15px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('▲ JUMP ▲', kx, ky + 20);
+
+      // 6. OBSTACLE 4: STREET 4-STAIR SET & HUBBA (-550, 520)
+      const stX = -550, stY = 520;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.28)';
+      ctx.beginPath();
+      ctx.roundRect(stX - 130, stY - 100, 260, 200, 8);
+      ctx.fill();
+
+      for (let i = 0; i < 4; i++) {
+        const stepY = stY - 90 + i * 45;
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(stX - 120, stepY, 240, 44);
+        ctx.fillStyle = '#cbd5e1';
+        ctx.fillRect(stX - 120, stepY, 240, 8);
+      }
+
+      ctx.fillStyle = '#475569';
+      ctx.fillRect(stX - 135, stY - 90, 28, 180);
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(stX - 135, stY - 90, 28, 6);
+
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 8;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(stX, stY - 85); ctx.lineTo(stX, stY + 85);
+      ctx.stroke();
+
+      // 7. OBSTACLE 5: DEEP CONCRETE BOWL (550, 520)
+      const bxPool = 550, byPool = 520;
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 14;
+      ctx.beginPath();
+      ctx.arc(bxPool, byPool, 160, 0, Math.PI * 2);
+      ctx.stroke();
+
+      const poolGrad = ctx.createRadialGradient(bxPool, byPool, 10, bxPool, byPool, 160);
+      poolGrad.addColorStop(0, '#1e293b');
+      poolGrad.addColorStop(0.6, '#475569');
+      poolGrad.addColorStop(0.9, '#94a3b8');
+      poolGrad.addColorStop(1, '#cbd5e1');
+      ctx.fillStyle = poolGrad;
+      ctx.beginPath();
+      ctx.arc(bxPool, byPool, 153, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#334155';
+      ctx.beginPath();
+      ctx.arc(bxPool, byPool, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // 8. OBSTACLE 6: STREET FLAT BAR RAIL (0, 160)
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.25)';
+      ctx.lineWidth = 12;
+      ctx.beginPath();
+      ctx.moveTo(-140, 162); ctx.lineTo(140, 162);
+      ctx.stroke();
+
+      [-120, 0, 120].forEach(fx => {
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(fx - 4, 150, 8, 20);
+      });
+
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-135, 160); ctx.lineTo(135, 160);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#93c5fd';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(-130, 158); ctx.lineTo(130, 158);
+      ctx.stroke();
+    }
+
+    function drawBoard(ctx, flipCos) {
+      // 4 Realistic Urethane Wheels with Bearings & Tread Detail
+      const wheelPositions = [[-42, -58], [42, -58], [-42, 58], [42, 58]];
+      wheelPositions.forEach(([wx, wy]) => {
+        const whGrad = ctx.createLinearGradient(wx - 9, 0, wx + 9, 0);
+        whGrad.addColorStop(0, '#e11d48');
+        whGrad.addColorStop(0.5, '#f43f5e');
+        whGrad.addColorStop(1, '#9f1239');
+        ctx.fillStyle = whGrad;
+        ctx.beginPath();
+        ctx.roundRect(wx - 9, wy - 14, 18, 28, 7);
+        ctx.fill();
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.beginPath();
+        ctx.arc(wx, wy, 5.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#475569';
+        ctx.beginPath();
+        ctx.arc(wx, wy, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#e2e8f0';
+        ctx.beginPath();
+        ctx.arc(wx, wy, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Polished Cast Aluminium Trucks
+      const trkGrad = ctx.createLinearGradient(0, -56, 0, 56);
+      trkGrad.addColorStop(0, '#e2e8f0');
+      trkGrad.addColorStop(0.5, '#94a3b8');
+      trkGrad.addColorStop(1, '#475569');
+      ctx.fillStyle = trkGrad;
+      ctx.fillRect(-36, -56, 72, 11);
+      ctx.fillRect(-36, 45, 72, 11);
+
+      ctx.fillStyle = '#f59e0b'; // Bushings
+      ctx.fillRect(-7, -53, 14, 5);
+      ctx.fillRect(-7, 48, 14, 5);
+      ctx.fillStyle = '#fde047'; // Kingpin Nut
+      ctx.beginPath();
+      ctx.arc(0, -50.5, 3.5, 0, Math.PI * 2);
+      ctx.arc(0, 50.5, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 7-Ply Canadian Maple Wood Bevel Rim
+      const showingUnderside = flipCos < 0;
+      ctx.fillStyle = '#b45309';
+      ctx.beginPath();
+      ctx.roundRect(-38, -104, 76, 208, 38);
+      ctx.fill();
+
+      if (showingUnderside) {
+        // Bottom Graphic: Pro Skate Art
+        const deckGrad = ctx.createLinearGradient(-35, -100, 35, 100);
+        deckGrad.addColorStop(0, '#0f172a');
+        deckGrad.addColorStop(0.3, '#1e1b4b');
+        deckGrad.addColorStop(0.7, '#312e81');
+        deckGrad.addColorStop(1, '#0f172a');
+        ctx.fillStyle = deckGrad;
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(-36, -102, 72, 204, 36);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.moveTo(0, -65);
+        ctx.lineTo(18, -22);
+        ctx.lineTo(5, -22);
+        ctx.lineTo(20, 30);
+        ctx.lineTo(-5, 0);
+        ctx.lineTo(5, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#f43f5e';
+        ctx.beginPath();
+        ctx.roundRect(-18, 44, 36, 16, 4);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('ELEMENT', 0, 52);
+      } else {
+        // Top Griptape
+        const gripGrad = ctx.createLinearGradient(-36, 0, 36, 0);
+        gripGrad.addColorStop(0, '#1e293b');
+        gripGrad.addColorStop(0.2, '#090d16');
+        gripGrad.addColorStop(0.8, '#090d16');
+        gripGrad.addColorStop(1, '#1e293b');
+        ctx.fillStyle = gripGrad;
+        ctx.beginPath();
+        ctx.roundRect(-36, -102, 72, 204, 36);
+        ctx.fill();
+
+        // 3D Nose & Tail Kick Shading
+        const noseGrad = ctx.createLinearGradient(0, -102, 0, -65);
+        noseGrad.addColorStop(0, 'rgba(255, 255, 255, 0.16)');
+        noseGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = noseGrad;
+        ctx.beginPath();
+        ctx.roundRect(-36, -102, 72, 45, [36, 36, 0, 0]);
+        ctx.fill();
+
+        const tailGrad = ctx.createLinearGradient(0, 65, 0, 102);
+        tailGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        tailGrad.addColorStop(1, 'rgba(0, 0, 0, 0.42)');
+        ctx.fillStyle = tailGrad;
+        ctx.beginPath();
+        ctx.roundRect(-36, 65, 72, 37, [0, 0, 36, 36]);
+        ctx.fill();
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(-36, -102, 72, 204, 36);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-28, -10); ctx.lineTo(28, -10);
+        ctx.stroke();
+
+        ctx.fillStyle = '#cbd5e1';
+        [
+          [-16, -68], [16, -68], [-16, -42], [16, -42],
+          [-16, 42], [16, 42], [-16, 68], [16, 68]
+        ].forEach(([bxPos, byPos]) => {
+          ctx.beginPath();
+          ctx.arc(bxPos, byPos, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(-16, -68, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     function loop() {
       requestAnimationFrame(loop);
-      const w = cvs.width, h = cvs.height, hz = h * 0.28, cx = w / 2;
+      const w = cvs.width, h = cvs.height, cx = w / 2, cy = h / 2;
 
-      // 1. Night Sky & Horizon Neon Glow
-      const sky = ctx.createLinearGradient(0, 0, 0, hz);
-      sky.addColorStop(0, '#050811');
-      sky.addColorStop(0.75, '#131638');
-      sky.addColorStop(1, '#1e1b4b');
-      ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, w, hz);
-
-      // Distant city silhouette
-      ctx.fillStyle = '#0c1024';
-      const bWidths = [45, 70, 55, 85, 60, 75, 50, 90, 65, 55];
-      let bxPos = 0;
-      for (let i = 0; bxPos < w; i++) {
-        const bw = bWidths[i % bWidths.length];
-        const bh = 22 + ((i * 19) % 45);
-        ctx.fillRect(bxPos, hz - bh, bw - 3, bh);
-        bxPos += bw;
+      // 1. Steering & Cruising Physics
+      if (stDir !== 0) {
+        skaterAngle += stDir * 0.052;
       }
+      let currentSpeed = inTricks ? 7.2 : 3.8;
+      if (isPushing) currentSpeed *= 1.4;
+      if (isBraking) currentSpeed *= 0.5;
 
-      // 2. Ground Plane
-      ctx.fillStyle = '#090d16';
-      ctx.fillRect(0, hz, w, h - hz);
+      posX += Math.sin(skaterAngle) * currentSpeed;
+      posY -= Math.cos(skaterAngle) * currentSpeed;
 
-      // 3. 3D-Perspective Scrolling Road
-      const roadTopHalf = 68;
-      const roadBotHalf = w * 0.45;
-      const roadGrad = ctx.createLinearGradient(0, hz, 0, h);
-      roadGrad.addColorStop(0, '#162032');
-      roadGrad.addColorStop(1, '#1e293b');
-      ctx.fillStyle = roadGrad;
-      ctx.beginPath();
-      ctx.moveTo(cx - roadTopHalf, hz);
-      ctx.lineTo(cx + roadTopHalf, hz);
-      ctx.lineTo(cx + roadBotHalf, h);
-      ctx.lineTo(cx - roadBotHalf, h);
-      ctx.closePath();
-      ctx.fill();
+      // Park Perimeter Bounding & Ricochet (keeps board inside arena)
+      const PARK_LIMIT = 1240;
+      if (posX > PARK_LIMIT) { posX = PARK_LIMIT; skaterAngle = Math.PI * 2 - skaterAngle; playSound('tap'); }
+      if (posX < -PARK_LIMIT) { posX = -PARK_LIMIT; skaterAngle = Math.PI * 2 - skaterAngle; playSound('tap'); }
+      if (posY > PARK_LIMIT) { posY = PARK_LIMIT; skaterAngle = Math.PI - skaterAngle; playSound('tap'); }
+      if (posY < -PARK_LIMIT) { posY = -PARK_LIMIT; skaterAngle = Math.PI - skaterAngle; playSound('tap'); }
 
-      // 4. Glowing Cyan Side Curbs / Grind Rails
-      ctx.save();
-      ctx.strokeStyle = '#06b6d4';
-      ctx.shadowColor = '#22d3ee';
-      ctx.shadowBlur = 16;
-      ctx.lineWidth = 7;
-      ctx.beginPath();
-      ctx.moveTo(cx - roadTopHalf, hz);
-      ctx.lineTo(cx - roadBotHalf, h);
-      ctx.stroke();
+      // Smooth camera follow
+      camX += (posX - camX) * 0.14;
+      camY += (posY - camY) * 0.14;
 
-      ctx.beginPath();
-      ctx.moveTo(cx + roadTopHalf, hz);
-      ctx.lineTo(cx + roadBotHalf, h);
-      ctx.stroke();
-      ctx.restore();
-
-      // 5. Moving Yellow Road Dashes with 3D perspective scaling
-      const speed = inTricks ? 15 : 6.5;
-      dashOff = (dashOff + speed) % 64;
-      ctx.strokeStyle = '#facc15';
-      for (let z = 8; z < h - hz; z += 64) {
-        const y = hz + ((z + dashOff) % (h - hz));
-        const p = (y - hz) / (h - hz);
-        ctx.lineWidth = 2 + p * 8;
-        ctx.beginPath();
-        ctx.moveTo(cx, y);
-        ctx.lineTo(cx, Math.min(h, y + 10 + p * 30));
-        ctx.stroke();
-      }
-
-      // 6. Skateboard Physics Update
-      bx = Math.max(-w * 0.27, Math.min(w * 0.27, bx + stDir * 6.5));
+      // Vertical air & flip physics
       if (by > 0 || vy > 0) {
         by += vy;
-        vy -= 0.82;
-        if (grindT !== 0 && by > 4) {
-          // Continuous rail grind sparks
-          spawnSparks(cx + bx, h * 0.58 - by + 20, 2, '#22d3ee');
+        vy -= 0.85;
+        if (grindT !== 0 && by > 3) {
+          spawnSparks(posX, posY, 2, '#facc15');
         }
         if (by <= 0) {
           by = 0;
@@ -872,67 +1347,143 @@ THOUGHT</textarea>
         }
       }
       if (flipV > 0) {
-        flipA += flipV * 0.042;
-        if (flipA >= Math.PI * 2) {
-          flipA = 0;
-          flipV = 0;
-        }
+        flipA += flipV * 0.045;
+        if (flipA >= Math.PI * 2) { flipA = 0; flipV = 0; }
       }
       if (shuvV > 0) {
-        shuvA += shuvV * 0.042;
-        if (shuvA >= Math.PI * 2) {
-          shuvA = 0;
-          shuvV = 0;
+        shuvA += shuvV * 0.045;
+        if (shuvA >= Math.PI * 2) { shuvA = 0; shuvV = 0; }
+      }
+
+      // Feature Proximity & Interaction Checks:
+      // Half-Pipe (0, -700)
+      const distHalfPipe = Math.hypot(posX, posY - (-700));
+      if (distHalfPipe < 220 && Math.abs(posY - (-700)) < 110 && by === 0) {
+        vy = 18;
+        activeTrickName = "HALF-PIPE AIR";
+        playSound('trick');
+        spawnSparks(posX, posY, 20, '#f43f5e');
+        showMsg("HALF-PIPE AIR! +500 PTS");
+        score += 500; bonus += 500;
+        document.getElementById('hud-score').textContent = score;
+        document.getElementById('t-pts').textContent = bonus;
+      }
+
+      // Kicker Launch Ramp (600, -180)
+      const distKicker = Math.hypot(posX - 600, posY - (-180));
+      if (distKicker < 140 && by === 0) {
+        vy = 17;
+        activeTrickName = "KICKER LAUNCH";
+        playSound('trick');
+        spawnSparks(posX, posY, 18, '#f59e0b');
+        showMsg("MEGA LAUNCH! +350 PTS");
+        score += 350; bonus += 350;
+        document.getElementById('hud-score').textContent = score;
+        document.getElementById('t-pts').textContent = bonus;
+      }
+
+      // A-Frame Red Steel Rail (-600, -180)
+      const distAFrame = Math.hypot(posX - (-600), posY - (-180));
+      if (Math.abs(posX - (-600)) < 30 && Math.abs(posY - (-180)) < 170) {
+        if (by <= 8) {
+          by = 6;
+          grindT = 0.35;
+          spawnSparks(posX, posY, 3, '#facc15');
+          score += 4; bonus += 4;
+          document.getElementById('hud-score').textContent = score;
+          document.getElementById('t-pts').textContent = bonus;
         }
       }
 
-      // 7. Dynamic Skateboard Shadow (shrinks & softens with jump height `by`)
-      const sx = cx + bx;
-      const sy = h * 0.58;
-      const shadowScale = Math.max(0.38, 1 - by / 260);
-      ctx.fillStyle = `rgba(0, 0, 0, ${0.58 * shadowScale})`;
-      ctx.beginPath();
-      ctx.ellipse(sx, sy + 32, 48 * shadowScale, 17 * shadowScale, 0, 0, Math.PI * 2);
-      ctx.fill();
+      // Center Flat Bar Rail (0, 160)
+      const distFlat = Math.hypot(posX, posY - 160);
+      if (Math.abs(posX) < 150 && Math.abs(posY - 160) < 25) {
+        if (by <= 8) {
+          by = 6;
+          grindT = -0.35;
+          spawnSparks(posX, posY, 3, '#38bdf8');
+          score += 4; bonus += 4;
+          document.getElementById('hud-score').textContent = score;
+          document.getElementById('t-pts').textContent = bonus;
+        }
+      }
 
-      // 8. Skateboard Deck, Trucks & Wheels
+      // 4-Stairs & Hubba (-550, 520)
+      const distStairs = Math.hypot(posX - (-550), posY - 520);
+      if (Math.abs(posX - (-550)) < 140 && Math.abs(posY - 520) < 110) {
+        if (Math.abs(posX - (-550)) < 25 && by <= 8) {
+          by = 6;
+          grindT = 0.32;
+          spawnSparks(posX, posY, 3, '#e2e8f0');
+          score += 4; bonus += 4;
+          document.getElementById('hud-score').textContent = score;
+          document.getElementById('t-pts').textContent = bonus;
+        }
+      }
+
+      // Concrete Bowl (550, 520)
+      const distBowl = Math.hypot(posX - 550, posY - 520);
+      if (distBowl < 180) {
+        if (Math.random() < 0.25) spawnSparks(posX, posY, 1, '#38bdf8');
+      }
+
+      // Dynamic Zone Badge Update
+      const minDist = Math.min(distHalfPipe, distKicker, distAFrame, distFlat, distStairs, distBowl);
+      let zoneName = "OPEN STREET PLAZA";
+      if (minDist < 280) {
+        if (minDist === distHalfPipe) zoneName = "WOODEN HALF-PIPE";
+        else if (minDist === distKicker) zoneName = "KICKER JUMP RAMP";
+        else if (minDist === distAFrame) zoneName = "A-FRAME STEEL RAIL";
+        else if (minDist === distFlat) zoneName = "FLAT GRIND RAIL";
+        else if (minDist === distStairs) zoneName = "4-STAIRS & HUBBA";
+        else if (minDist === distBowl) zoneName = "CONCRETE BOWL";
+      }
+      const zoneBadge = document.getElementById('park-feature-name');
+      if (zoneBadge && zoneBadge.textContent !== zoneName) {
+        zoneBadge.textContent = zoneName;
+      }
+
+      // RENDERING:
       ctx.save();
-      ctx.translate(sx, sy - by);
-      ctx.rotate(shuvA + grindT + stDir * 0.09);
-      const flipCos = Math.cos(flipA);
-      ctx.scale(flipCos, 1);
+      // Clear entire canvas with exterior lawn green
+      ctx.fillStyle = '#065f46';
+      ctx.fillRect(0, 0, w, h);
 
-      // Wheels
-      ctx.fillStyle = '#f43f5e';
-      [[-32, -40], [32, -40], [-34, 40], [34, 40]].forEach(([wx, wy]) => {
+      // Camera transformation
+      ctx.translate(cx - camX, cy - camY);
+
+      // 2. Draw Skatepark Arena (Floor, Perimeter, Markings, Obstacles)
+      drawSkateparkArena(ctx);
+
+      // 3. Draw Skateboard Contact Shadow
+      const shadowScale = Math.max(0.4, 1 - by / 280);
+      ctx.save();
+      ctx.translate(posX, posY);
+      ctx.rotate(skaterAngle);
+      ctx.fillStyle = `rgba(15, 23, 42, ${0.45 * shadowScale})`;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 22 * shadowScale, 48 * shadowScale, 0, 0, Math.PI * 2);
+      ctx.fill();
+      if (by < 40) {
+        const coreAlpha = (1 - by / 40) * 0.6;
+        ctx.fillStyle = `rgba(15, 23, 42, ${coreAlpha})`;
         ctx.beginPath();
-        ctx.roundRect(wx - 7, wy - 7, 14, 14, 4);
+        ctx.ellipse(0, 0, 16, 36, 0, 0, Math.PI * 2);
         ctx.fill();
-      });
-
-      // Trucks (visible metallic axle)
-      ctx.fillStyle = '#94a3b8';
-      ctx.fillRect(-28, -37, 56, 6);
-      ctx.fillRect(-28, 31, 56, 6);
-
-      // Skateboard Deck Base
-      const showingUnderside = flipCos < 0;
-      ctx.fillStyle = showingUnderside ? '#be185d' : '#0f172a';
-      ctx.strokeStyle = showingUnderside ? '#f472b6' : '#38bdf8';
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.roundRect(-29, -74, 58, 148, 29);
-      ctx.fill();
-      ctx.stroke();
-
-      // Deck Center Stripe / Graphic
-      ctx.fillStyle = showingUnderside ? '#fde047' : '#06b6d4';
-      ctx.beginPath();
-      ctx.roundRect(-13, -56, 26, 112, 12);
-      ctx.fill();
+      }
       ctx.restore();
 
-      // 9. Particle Sparks
+      // 4. Draw Touchgrind Skateboard Deck
+      ctx.save();
+      ctx.translate(posX, posY - by);
+      ctx.rotate(skaterAngle + shuvA + grindT + stDir * 0.16);
+      const flipCos = Math.cos(flipA);
+      ctx.scale(flipCos * 0.85, 0.85);
+
+      drawBoard(ctx, flipCos);
+      ctx.restore();
+
+      // 5. Particle Sparks
       for (let i = sparks.length - 1; i >= 0; i--) {
         const s = sparks[i];
         s.x += s.vx;
@@ -942,12 +1493,14 @@ THOUGHT</textarea>
         if (s.life > 0) {
           ctx.fillStyle = s.color;
           ctx.globalAlpha = s.life;
-          ctx.fillRect(s.x, s.y, 5, 5);
+          ctx.fillRect(s.x, s.y, 4, 4);
           ctx.globalAlpha = 1;
         } else {
           sparks.splice(i, 1);
         }
       }
+
+      ctx.restore();
     }
 
     loop();
