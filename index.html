@@ -205,6 +205,47 @@
       <span class="text-[10px] font-extrabold tracking-widest text-amber-300 uppercase mt-1">TOUCHGRIND TRICK PADS</span>
     </div>
 
+    <!-- Classroom PIN Access Gate Modal -->
+    <div id="modal-pin" class="fixed inset-0 z-[60] flex items-center justify-center p-4 modal-bg">
+      <div class="panel border-2 border-amber-400/80 rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/20 border-2 border-amber-400 flex items-center justify-center text-3xl shadow-lg">
+          &#128274;
+        </div>
+        <div>
+          <h2 class="text-2xl font-black font-display tracking-wide text-white">Classroom Access</h2>
+          <p class="text-xs text-slate-300 font-semibold mt-1">Enter your 4-digit PIN code to unlock the skateboarding game.</p>
+        </div>
+
+        <!-- 4-digit input display -->
+        <div class="flex justify-center my-1">
+          <input type="password" id="pin-input" maxlength="4" placeholder="&bull;&bull;&bull;&bull;"
+            class="w-44 text-center tracking-[12px] text-3xl font-black font-mono py-2.5 rounded-2xl bg-slate-950 border-2 border-amber-400/80 text-amber-300 focus:outline-none focus:border-amber-300 shadow-inner"
+            inputmode="numeric" autocomplete="off" />
+        </div>
+        <div id="pin-error" class="text-xs font-bold text-rose-400 hidden animate-pulse">Incorrect PIN. Please try again.</div>
+
+        <!-- Numeric Keypad for Interactive Whiteboards / Touchscreens -->
+        <div class="grid grid-cols-3 gap-2 max-w-[240px] mx-auto pt-1">
+          <button type="button" onpointerdown="pinDigit('1')" onmousedown="pinDigit('1')" onclick="pinDigit('1')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#49;</button>
+          <button type="button" onpointerdown="pinDigit('2')" onmousedown="pinDigit('2')" onclick="pinDigit('2')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#50;</button>
+          <button type="button" onpointerdown="pinDigit('3')" onmousedown="pinDigit('3')" onclick="pinDigit('3')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#51;</button>
+          <button type="button" onpointerdown="pinDigit('4')" onmousedown="pinDigit('4')" onclick="pinDigit('4')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#52;</button>
+          <button type="button" onpointerdown="pinDigit('5')" onmousedown="pinDigit('5')" onclick="pinDigit('5')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#53;</button>
+          <button type="button" onpointerdown="pinDigit('6')" onmousedown="pinDigit('6')" onclick="pinDigit('6')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#54;</button>
+          <button type="button" onpointerdown="pinDigit('7')" onmousedown="pinDigit('7')" onclick="pinDigit('7')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#55;</button>
+          <button type="button" onpointerdown="pinDigit('8')" onmousedown="pinDigit('8')" onclick="pinDigit('8')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#56;</button>
+          <button type="button" onpointerdown="pinDigit('9')" onmousedown="pinDigit('9')" onclick="pinDigit('9')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#57;</button>
+          <button type="button" onpointerdown="pinClear()" onmousedown="pinClear()" onclick="pinClear()" class="py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-black text-slate-400">CLEAR</button>
+          <button type="button" onpointerdown="pinDigit('0')" onmousedown="pinDigit('0')" onclick="pinDigit('0')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#48;</button>
+          <button type="button" onpointerdown="checkPin()" onmousedown="checkPin()" onclick="checkPin()" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 font-black text-xs">ENTER</button>
+        </div>
+
+        <div class="text-[11px] text-slate-400 font-medium pt-1">
+          Teacher default PIN: <span class="font-mono text-amber-300 font-bold tracking-widest">1234</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Pre-Game & In-Game Settings Modal -->
     <div id="modal-set" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-bg">
       <div class="panel border-2 border-cyan-500/60 rounded-3xl max-w-lg w-full p-6 text-center space-y-4 shadow-2xl">
@@ -283,6 +324,12 @@ THOUGHT</textarea>
         <button type="button" onpointerdown="startGame()" onmousedown="startGame()" onclick="startGame()" class="w-4/5 mx-auto py-3.5 rounded-3xl bg-gradient-to-r from-rose-500 via-pink-500 to-purple-600 text-white font-black text-lg font-display border-2 border-white/60 shadow-xl">
           &#128761; Drop In &amp; Skate!
         </button>
+
+        <div class="pt-1">
+          <button type="button" onpointerdown="reLockApp()" onmousedown="reLockApp()" onclick="reLockApp()" class="text-xs text-slate-400 hover:text-amber-300 font-bold underline transition-colors">
+            &#128274; Lock app with PIN
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -316,6 +363,66 @@ THOUGHT</textarea>
     let comboMultiplier = 1;
     let comboTimer = null;
     let activeLine = [];
+
+    // ============================================================================
+    // CLASSROOM PIN CODE ACCESS GATE
+    // ============================================================================
+    // Default PIN: 1234 (Easy for teachers to change right here)
+    const APP_PIN = "1234";
+
+    function checkPin() {
+      const inp = document.getElementById('pin-input');
+      const err = document.getElementById('pin-error');
+      if (inp.value === APP_PIN) {
+        sessionStorage.setItem('skate_pin_unlocked', 'true');
+        document.getElementById('modal-pin').classList.add('hidden');
+        playSound('unlock');
+        showMsg("CLASSROOM UNLOCKED! &#128761;");
+      } else {
+        err.classList.remove('hidden');
+        playSound('wrong');
+        inp.value = '';
+        setTimeout(() => err.classList.add('hidden'), 2500);
+      }
+    }
+
+    function pinDigit(d) {
+      const inp = document.getElementById('pin-input');
+      if (inp.value.length < 4) {
+        inp.value += d;
+        if (inp.value.length === 4) {
+          checkPin();
+        }
+      }
+    }
+
+    function pinClear() {
+      document.getElementById('pin-input').value = '';
+      document.getElementById('pin-error').classList.add('hidden');
+    }
+
+    function reLockApp() {
+      sessionStorage.removeItem('skate_pin_unlocked');
+      document.getElementById('modal-set').classList.add('hidden');
+      document.getElementById('modal-pin').classList.remove('hidden');
+      document.getElementById('pin-input').value = '';
+      playSound('tap');
+    }
+
+    function initPinGate() {
+      if (sessionStorage.getItem('skate_pin_unlocked') === 'true') {
+        document.getElementById('modal-pin').classList.add('hidden');
+      } else {
+        document.getElementById('modal-pin').classList.remove('hidden');
+        const inp = document.getElementById('pin-input');
+        if (inp) {
+          inp.addEventListener('keyup', e => {
+            if (e.key === 'Enter') checkPin();
+            else if (inp.value.length === 4) checkPin();
+          });
+        }
+      }
+    }
 
     // 150ms Hyperbeam-safe debounce so pointerdown/mousedown/click never double-fire or drop
     function tapOk() {
@@ -1503,6 +1610,7 @@ THOUGHT</textarea>
       ctx.restore();
     }
 
+    initPinGate();
     loop();
     loadQ();
   </script>
