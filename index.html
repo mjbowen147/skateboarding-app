@@ -213,14 +213,14 @@
         </div>
         <div>
           <h2 class="text-2xl font-black font-display tracking-wide text-white">Classroom Access</h2>
-          <p class="text-xs text-slate-300 font-semibold mt-1">Enter your 4-digit PIN code to unlock the skateboarding game.</p>
+          <p class="text-xs text-slate-300 font-semibold mt-1">Enter your 6-digit PIN code to unlock the skateboarding game.</p>
         </div>
 
-        <!-- 4-digit input display -->
+        <!-- 6-digit input display -->
         <div class="flex justify-center my-1">
-          <input type="password" id="pin-input" maxlength="4" placeholder="&bull;&bull;&bull;&bull;"
-            class="w-44 text-center tracking-[12px] text-3xl font-black font-mono py-2.5 rounded-2xl bg-slate-950 border-2 border-amber-400/80 text-amber-300 focus:outline-none focus:border-amber-300 shadow-inner"
-            inputmode="numeric" autocomplete="off" />
+          <input type="password" id="pin-input" maxlength="6" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
+            class="w-56 text-center tracking-[10px] text-3xl font-black font-mono py-2.5 rounded-2xl bg-slate-950 border-2 border-amber-400/80 text-amber-300 focus:outline-none focus:border-amber-300 shadow-inner"
+            autocomplete="off" />
         </div>
         <div id="pin-error" class="text-xs font-bold text-rose-400 hidden animate-pulse">Incorrect PIN. Please try again.</div>
 
@@ -238,10 +238,6 @@
           <button type="button" onclick="pinClear()" class="py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-black text-slate-400">CLEAR</button>
           <button type="button" onclick="pinDigit('0')" class="py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border border-slate-700 text-lg font-black text-white">&#48;</button>
           <button type="button" onclick="checkPin()" class="py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-slate-950 font-black text-xs">ENTER</button>
-        </div>
-
-        <div class="text-[11px] text-slate-400 font-medium pt-1">
-          Teacher default PIN: <span class="font-mono text-amber-300 font-bold tracking-widest">1234</span>
         </div>
       </div>
     </div>
@@ -367,8 +363,8 @@ THOUGHT</textarea>
     // ============================================================================
     // CLASSROOM PIN CODE ACCESS GATE
     // ============================================================================
-    // Default PIN: 1234 (Easy for teachers to change right here)
-    const APP_PIN = "1234";
+    // 6-digit Classroom PIN Access Code
+    const APP_PIN = "007007";
 
     function checkPin() {
       const inp = document.getElementById('pin-input');
@@ -389,9 +385,9 @@ THOUGHT</textarea>
     function pinDigit(d) {
       playSound('tap');
       const inp = document.getElementById('pin-input');
-      if (inp.value.length < 4) {
+      if (inp.value.length < 6) {
         inp.value += d;
-        if (inp.value.length === 4) {
+        if (inp.value.length === 6) {
           setTimeout(checkPin, 120);
         }
       }
@@ -420,7 +416,7 @@ THOUGHT</textarea>
         if (inp) {
           inp.addEventListener('keyup', e => {
             if (e.key === 'Enter') checkPin();
-            else if (inp.value.length === 4) checkPin();
+            else if (inp.value.length === 6) checkPin();
           });
         }
       }
